@@ -15,16 +15,16 @@ const options = {
 async function playSong() {
   let song = global.serverQueue[0];
   if (!song) {
-    logging.Err(`End of queue!`);
+    logging.Log(`End of queue!`, "gold");
     return;
   }
   await global.vChannel.join().then((connection) => {
-    global.dispatcher = connection.play(song.url)
-    .on("finish", async () => {
-      global.serverQueue.shift();
+
+    global.dispatcher = connection.play(song.url).on("finish", async () => {
       global.dispatcher.setVolumeLogarithmic(volume);
       playSong();
     });
+    global.serverQueue.shift();
     // let startSec = new Date().getTime();
     // setTimeout(() => {
     //   let endSec = new Date().getTime();
@@ -77,8 +77,8 @@ async function createPlaylist(query) {
   try {
     arr = await ytpl(url);
   } catch (err) {
-    logging.Err(err);
-    return;
+    logging.Err(`Unable to find a id in "${url}"`);
+    return embed.newEmbedMsg("Неправильный плейлист!", true, `Ссылки с "джема" не поддерживаются!`);
   }
   embed.newEmbedMsg(
     "Формирование плейлиста...",
@@ -164,7 +164,7 @@ async function getsong(url) {
     return undefined;
   }
   const format = songInfo.formats.find((element) => element.hasAudio === true);
-  console.log("\033[1;33m",`• Track added: ${songInfo.videoDetails.title}`);
+  console.log("\033[1;33m", `• Track added: ${songInfo.videoDetails.title}`);
   const song = {
     title: songInfo.videoDetails.title,
     author: songInfo.videoDetails.author.name,

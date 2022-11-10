@@ -1,4 +1,5 @@
 //https://discord.com/developers/applications/1032385916242759731/oauth2/general
+require('http').createServer((req, res) => res.end('Lute.bot started!')).listen(3000);
 const { Client, MessageEmbed } = require("discord.js");
 const { prefix, token } = require("./config.json");
 const logging = require("./modules/logging");

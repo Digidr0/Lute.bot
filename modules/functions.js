@@ -7,10 +7,11 @@ const ytpl = require("ytpl");
 // const fetch = require("node-fetch")
 
 async function help() {
+  logging.Log(`${global.client.user.tag} request help`, "cyan");
   return embed.newEmbedMsg(
     "Список команд:",
     false,
-    "**.join** => подключение к голосовому каналу\n\n**.leave** => покинуть голосовой канал\n\n**.play** [.p] => включить песню (поиск или ссылка с YT)\n\n**.skip** [.next .n] => пропуск песни\n\n**.stop** => остановить музыку \n\n**.avatar** => получить URL аватара",
+    "➡️ Подключение к голосовому каналу\n```.join```\n ⬅️ Покинуть голосовой канал\n```.leave```\n⏯️ Включить песню (поиск или ссылка с YT)\n```.play[.p]```\n⏩ Пропуск песни\n```.skip [.next .n]```\n⏹️ Остановить музыку\n```.stop```\n🎦 Получить URL аватара\n```.avatar```",
     "https://discord.gg/jXQYn6JVqz"
   );
 }
@@ -46,6 +47,16 @@ function skip() {
 }
 
 function stop() {
+  try {
+    global.dispatcher.destroy();
+    global.serverQueue = [];
+    logging.Log(`[${global.message.author.tag}] stop the music.`, "red");
+    return embed.newEmbedMsg(
+      "Музыка остановлена.",
+      false,
+      "Предлагаю наболтать немного музыки!"
+    );
+  } catch {}
   if (!global.vChannel) {
     logging.Err(`[${global.message.author.tag}] not in voice channel!`);
     return embed.newEmbedMsg(
@@ -59,14 +70,6 @@ function stop() {
       true,
       "Предлагаю наболтать немного музыки!"
     );
-  global.dispatcher.destroy();
-  global.serverQueue = [];
-  logging.Log(`[${global.message.author.tag}] stop the music.`, "red");
-  return embed.newEmbedMsg(
-    "Музыка остановлена.",
-    false,
-    "Предлагаю наболтать немного музыки!"
-  );
 }
 
 //play
@@ -91,6 +94,7 @@ async function queue() {
     let arr = global.serverQueue.map((e, num) => {
       return `\n ${num + 1}: *${e.title}*`;
     });
+    logging.Log(`${global.client.user.tag} request queue`, "cyan");
     embed.newEmbedMsg("Очередь песен:", false, arr.slice(0, 50).toString());
   } catch (e) {
     logging.Err(e);
@@ -127,9 +131,18 @@ async function lyrics() {
   //   .then((data) => console.log(data));
 }
 
-function shuffle(){
-  global.serverQueue =   global.serverQueue.sort(() => Math.random() - 0.5);
-  embed.newEmbedMsg("Треки перемешаны!", false, undefined, undefined, undefined, undefined, 3);
+function shuffle() {
+  global.serverQueue = global.serverQueue.sort(() => Math.random() - 0.5);
+  logging.Log(`${global.client.user.tag} shuffle tracks`, "cyan");
+  embed.newEmbedMsg(
+    "Треки перемешаны!",
+    false,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    3
+  );
 }
 
 module.exports.help = help;
