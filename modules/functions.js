@@ -132,6 +132,7 @@ async function lyrics() {
 }
 
 function shuffle() {
+  global.serverQueue.shift();
   global.serverQueue = global.serverQueue.sort(() => Math.random() - 0.5);
   logging.Log(`${global.client.user.tag} shuffle tracks`, "cyan");
   embed.newEmbedMsg(

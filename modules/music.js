@@ -15,16 +15,15 @@ const options = {
 async function playSong() {
   let song = global.serverQueue[0];
   if (!song) {
-    logging.Log(`End of queue!`, "gold");
+    logging.Log(`End of queue!`, "red");
     return;
   }
   await global.vChannel.join().then((connection) => {
-
     global.dispatcher = connection.play(song.url).on("finish", async () => {
       global.dispatcher.setVolumeLogarithmic(volume);
+      global.serverQueue.shift();
       playSong();
     });
-    global.serverQueue.shift();
     // let startSec = new Date().getTime();
     // setTimeout(() => {
     //   let endSec = new Date().getTime();
@@ -78,7 +77,11 @@ async function createPlaylist(query) {
     arr = await ytpl(url);
   } catch (err) {
     logging.Err(`Unable to find a id in "${url}"`);
-    return embed.newEmbedMsg("Неправильный плейлист!", true, `Ссылки с "джема" не поддерживаются!`);
+    return embed.newEmbedMsg(
+      "Неправильный плейлист!",
+      true,
+      `Ссылки с "джема" не поддерживаются!`
+    );
   }
   embed.newEmbedMsg(
     "Формирование плейлиста...",
@@ -176,7 +179,6 @@ async function getsong(url) {
     authorId: global.message.author.id,
     thumb: `https://i.ytimg.com/vi/${songInfo.videoDetails.videoId}/hqdefault.jpg`,
   };
-
   return song;
 }
 
@@ -203,9 +205,9 @@ async function play() {
     query.startsWith("https://www.youtube.com/watch" || " https://youtu.be")
   ) {
     let song = await getsong(query);
-    logging.Log(`${song.authorTag} request ${song.title}`, "cyan");
     if (song) {
       addSong(song);
+      logging.Log(`${song.authorTag} request ${song.title}`, "cyan");
     }
   } else {
     const filters = await ytsr.getFilters(query);
@@ -223,6 +225,7 @@ async function play() {
     let song = await getsong(query);
     if (song) {
       addSong(song);
+      logging.Log(`${song.authorTag} request ${song.title}`, "cyan");
     }
   }
 }
