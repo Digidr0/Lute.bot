@@ -92,7 +92,7 @@ async function queue() {
   }
   try {
     let arr = global.serverQueue.map((e, num) => {
-      return `\n ${num + 1}: *${e.title}*`;
+      return `\n **${num + 1}:** *${e.title}*`;
     });
     logging.Log(`${global.client.user.tag} request queue`, "cyan");
     embed.newEmbedMsg("Очередь песен:", false, arr.slice(0, 50).toString());
