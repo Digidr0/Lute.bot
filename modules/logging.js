@@ -1,4 +1,4 @@
-const { format } = require("date-fns");
+const { format, getUnixTime } = require("date-fns");
 
 function Log(message, clr) {
   let color = "\u001B[0m";
@@ -19,21 +19,23 @@ function Log(message, clr) {
       color = '\033[1;37m' ;
       break;
   }
-  const date = format(new Date(), "[d MMM, HH:mm:ss] ");
-  console.log(`${color}${date} ${message}`);
+  const messageDate = `<t:${getUnixTime(new Date())}:R> `
+  const logDate = format(new Date(), "[d MMM, HH:mm:ss] ");
+  console.log(`${color}${logDate} ${message}`);
   global.client.channels.cache
     .get("949632312256114759")
-    .send(`\`\`\`c\n${date}${message}\`\`\``);
+    .send(`\n${message} ${messageDate}`);
   //shell bash js
 }
 
 function Err(message) {
-  const date = format(new Date(), "[d MMM, HH:mm:ss] ");
+  const messageDate = `<t:${getUnixTime(new Date())}:F> `
+  const logDate = format(new Date(), "[d MMM, HH:mm:ss] ");
 
-  console.error("\u001b[31m", date, "Error: ", message);
+  console.error("\u001b[31m", logDate, "Error: ", message);
   global.client.channels.cache
     .get("949632312256114759")
-    .send(`\`\`\`shell\n❗${date}${message}\`\`\``);
+    .send(`\n❗${messageDate} ${message}`);
   //shell bash js
 }
 module.exports.Log = Log;
