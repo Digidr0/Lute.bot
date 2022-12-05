@@ -1,5 +1,7 @@
 //https://discord.com/developers/applications/1032385916242759731/oauth2/general
-require('http').createServer((req, res) => res.end('Lute.bot started!')).listen(3000);
+require("http")
+  .createServer((req, res) => res.end("Lute.bot started!"))
+  .listen(3000);
 const { Client, MessageEmbed } = require("discord.js");
 const { prefix, token } = require("./config.json");
 const logging = require("./modules/logging");
@@ -40,11 +42,12 @@ global.serverQueue = [];
 client.on("message", async (message) => {
   //tests
   if (message.author.bot) return;
+  if (message.content.includes("store.steampowered.com/app")) return functions.steam(message);
   if (!message.content.startsWith(prefix)) return;
   if (chkCmd("avatar")) return message.channel.send(message.author.avatarURL());
-
-  global.message = message;
+  
   // global.serverQueue = queue.get(message.guild.id);
+  global.message = message;
   global.vChannel = message.member.voice.channel;
 
   if (!message.member.voice.channel) {
@@ -59,17 +62,18 @@ client.on("message", async (message) => {
   if (message.content.startsWith(`${prefix}`)) {
     //  await global.message.delete()
   }
+
   if (chkCmd("help")) return functions.help();
   else if (chkCmd("p")) return music.play();
   else if (chkCmd("join")) return functions.join();
   else if (chkCmd("queue")) return functions.queue();
   else if (chkCmd("stop")) return functions.stop();
-  else if (chkCmd("skip") || chkCmd("next") || chkCmd("n"))
-    return functions.skip(message, global.serverQueue);
   else if (chkCmd("a")) return functions.playAudio();
   else if (chkCmd("ly")) return functions.lyrics();
   else if (chkCmd("shuffle")) return functions.shuffle();
   else if (chkCmd("leave") || chkCmd("disconnect")) return functions.leave();
+  else if (chkCmd("skip") || chkCmd("next") || chkCmd("n"))
+    return functions.skip(message, global.serverQueue);
   else {
     logging.Err(`invalid command "${global.message.content.split(" ")[0]}"`);
     embed.newEmbedMsg("Неправильная команда!", true);
