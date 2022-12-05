@@ -1,5 +1,6 @@
 const logging = require("./logging");
 const embed = require("./embed");
+const { MessageEmbed } = require("discord.js");
 const { volume } = require("../config.json");
 const { getInfo } = require("ytdl-core");
 const ytsr = require("ytsr");
@@ -146,6 +147,18 @@ function shuffle() {
   );
 }
 
+function steam(message) {
+  if (!message.content.startsWith(`https`)) return;
+  url = new URL(message.content);
+  id = url.pathname.split("/")[2];
+  game =  url.pathname.split("/")[3].replaceAll("_", " ")
+
+  const Embed = new MessageEmbed()
+    .setDescription(`steam://install/${id}`)
+    .setTitle(`Установить ${game}`).setColor('0x144b7e');
+  message.channel.send(Embed);
+}
+
 module.exports.help = help;
 module.exports.playAudio = playAudio;
 module.exports.join = join;
@@ -155,3 +168,4 @@ module.exports.leave = leave;
 module.exports.queue = queue;
 module.exports.lyrics = lyrics;
 module.exports.shuffle = shuffle;
+module.exports.steam = steam;
