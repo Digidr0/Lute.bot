@@ -24,7 +24,7 @@ function Log(message, clr) {
   console.log(`${color}${logDate} ${message}`);
   global.client.channels.cache
     .get("949632312256114759")
-    .send(`\n${message} ${messageDate}`);
+    .send(`\`\`\`c\n${message}\`\`\` ${messageDate}`);
   //shell bash js
 }
 
@@ -35,7 +35,7 @@ function Err(message) {
   console.error("\u001b[31m", logDate, "Error: ", message);
   global.client.channels.cache
     .get("949632312256114759")
-    .send(`\n❗${messageDate} ${message}`);
+    .send(`\`\`\`shell\n❗${message}\`\`\` ${messageDate}`);
   //shell bash js
 }
 module.exports.Log = Log;

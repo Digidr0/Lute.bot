@@ -29,6 +29,7 @@ function newEmbedMsg(
       },
     ];
   }
+  
   // inside a command, event listener, etc.
   const Embed = new MessageEmbed()
     .setColor(warn ? 0xcc3520 : 0xfaa520)
