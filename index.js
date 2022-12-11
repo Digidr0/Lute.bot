@@ -3,11 +3,12 @@ require("http")
   .createServer((req, res) => res.end("Lute.bot started!"))
   .listen(3000);
 const { Client, MessageEmbed } = require("discord.js");
-const { prefix, token } = require("./config.json");
+const { prefix, sleepEmoji } = require("./config.json");
 const logging = require("./modules/logging");
 const functions = require("./modules/functions");
 const music = require("./modules/music");
 const embed = require("./modules/embed");
+const { config } = require("dotenv");
 require("dotenv").config();
 // const slashCommands = require("./modules/slashCommands");
 
@@ -42,6 +43,7 @@ global.serverQueue = [];
 client.on("message", async (message) => {
   //tests
   if (message.author.bot) return;
+  if (message.content.includes(sleepEmoji)) return functions.spkn4(message);
   if (message.content.includes("store.steampowered.com/app")) return functions.steam(message);
   if (!message.content.startsWith(prefix)) return;
   if (chkCmd("avatar")) return message.channel.send(message.author.avatarURL());
