@@ -1,7 +1,7 @@
 const logging = require("./logging");
 const embed = require("./embed");
 const { MessageEmbed } = require("discord.js");
-const { volume } = require("../config.json");
+const { volume, sleepEmoji } = require("../config.json");
 const { getInfo } = require("ytdl-core");
 const ytsr = require("ytsr");
 const ytpl = require("ytpl");
@@ -158,6 +158,9 @@ function steam(message) {
     .setTitle(`Установить ${game}`).setColor('0x144b7e');
   message.channel.send(Embed);
 }
+function spkn4(message){
+  message.reply(sleepEmoji)
+}
 
 module.exports.help = help;
 module.exports.playAudio = playAudio;
@@ -169,3 +172,4 @@ module.exports.queue = queue;
 module.exports.lyrics = lyrics;
 module.exports.shuffle = shuffle;
 module.exports.steam = steam;
+module.exports.spkn4 = spkn4;
