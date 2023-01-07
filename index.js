@@ -8,6 +8,7 @@ const logging = require("./modules/logging");
 const functions = require("./modules/functions");
 const music = require("./modules/music");
 const embed = require("./modules/embed");
+const dayOfTheYear = require("./modules/dayOfTheYear");
 const { config } = require("dotenv");
 require("dotenv").config();
 // const slashCommands = require("./modules/slashCommands");
@@ -21,13 +22,13 @@ global.client = client;
 //on start
 client.once("ready", () => {
   logging.Log(`${client.user.tag} has log in`, "gold");
-  client.user.setPresence({
+  dayOfTheYear.getDay.then((holiday)=>client.user.setPresence({
     activity: {
-      name: ".help",
-      type: "STREAMING",
-      url: "https://www.twitch.tv/digidro_",
+      name: holiday,
+      // type: "STREAMING",
+      // url: "https://www.twitch.tv/digidro_",
     },
-  });
+  }))
 });
 
 //ping
@@ -44,10 +45,11 @@ client.on("message", async (message) => {
   //tests
   if (message.author.bot) return;
   if (message.content.includes(sleepEmoji)) return functions.spkn4(message);
-  if (message.content.includes("store.steampowered.com/app")) return functions.steam(message);
+  if (message.content.includes("store.steampowered.com/app"))
+    return functions.steam(message);
   if (!message.content.startsWith(prefix)) return;
   if (chkCmd("avatar")) return message.channel.send(message.author.avatarURL());
-  
+
   // global.serverQueue = queue.get(message.guild.id);
   global.message = message;
   global.vChannel = message.member.voice.channel;
