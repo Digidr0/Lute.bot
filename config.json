@@ -2,5 +2,10 @@
     "prefix": ".",
     "volume": 0.3,
     "logChannelId": "949632312256114759",
-    "sleepEmoji": "<:spkn4:818930984023752705>"
+    "sleepEmoji": "<:spkn4:818930984023752705>",
+   "botStatus": {
+    "name": "на Новый, 2023 год",
+    "type": "WATCHING",
+     "url": "https://www.twitch.tv/digidro_"
+  }
     }
