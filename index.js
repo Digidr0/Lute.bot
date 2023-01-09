@@ -23,12 +23,16 @@ global.client = client;
 //on start
 client.once("ready", () => {
   logging.Log(`${client.user.tag} has log in`, "gold");
-  dayOfTheYear.getDay.then((holiday)=>client.user.setPresence({
+  dayOfTheYear.getDay.then((holiday) => client.user.setPresence({
     activity: {
       name: holiday,
-      // type: "STREAMING",
-      // url: "https://www.twitch.tv/digidro_",
+      type: "STREAMING",
+      url: "https://www.twitch.tv/digidro_",
     },
+  })).catch(() => client.user.setPresence({
+    activity: {
+      name: holiday
+    }
   }))
 });
 
@@ -54,7 +58,7 @@ client.on("message", async (message) => {
   // global.serverQueue = queue.get(message.guild.id);
   global.message = message;
   if (message.content.includes("help")) return functions.help();
-  
+
   global.vChannel = message.member.voice.channel;
 
   if (!message.member.voice.channel) {
@@ -70,7 +74,7 @@ client.on("message", async (message) => {
     //  await global.message.delete()
   }
 
-  
+
   if (chkCmd("p")) return music.play();
   else if (chkCmd("join")) return functions.join();
   else if (chkCmd("queue")) return functions.queue();
